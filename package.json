@@ -1,0 +1,33 @@
+{
+  "name": "socialnetwork",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "gravatar": "^1.8.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.6",
+    "mongoose-type-url": "^2.1.0",
+    "mysql2": "*",
+    "request": "^2.88.2",
+    "sequelize": "^6.9.0",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.14"
+  }
+}
