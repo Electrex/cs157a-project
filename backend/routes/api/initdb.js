@@ -41,4 +41,31 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+router.post('/:make/:model', async (req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+        const make = 'Toyota';
+        const model = 'Camry';
+        const insertSQLQuery = `INSERT INTO Make (make, model) VALUES (?, ?)`;
+        db.run(insertSQLQuery, [req.params.make, req.params.model], function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            console.log(`A row has been inserted with make ${this.make}`);
+        });
+        return res.send(insertSQLQuery);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+})
+
 module.exports = router;
