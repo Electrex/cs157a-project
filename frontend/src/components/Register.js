@@ -44,7 +44,7 @@ function Register(props) {
 
         const body = JSON.stringify(newUser);
 
-        const res = await axios.post('/api/users', body, config);
+        const res = await axios.post('/users', body, config);
         clearState();
         if (res.status === 400 || res.status === 500){
           return null

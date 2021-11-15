@@ -36,7 +36,7 @@ function Login(props) {
                 }
               }
             const body = JSON.stringify(loginAttempt)
-            const result = await axios.post('/api/auth', body, config); // Authenticate email and password
+            const result = await axios.post('/auth', body, config); // Authenticate email and password
             if (result.status === 400 || result.status === 500) {
                 return null
             }
