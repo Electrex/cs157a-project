@@ -1,4 +1,5 @@
 {
     "user": "projectuser",
-    "password": "Jahanrocks!"
+    "password": "Jahanrocks!",
+    "jwtSecret": "mysecrettoken"
 }

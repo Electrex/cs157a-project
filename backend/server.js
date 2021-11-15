@@ -44,8 +44,8 @@ app.get('/', (req, res) => res.send('API running'));
 
 // Define routes
 app.use('/initdb', require('./routes/api/initdb'));    // Route for creating the database for the first time
-// app.use('/api/users', require('./routes/api/users'));       // Route for registering user (pass in name, email, password --> creates user entry in database on success and returns token)
-// app.use('/api/auth', require('./routes/api/auth'));         // Route for authenticating user (pass in email and password --> either authenticates or not and returns token)
+app.use('/users', require('./routes/api/users'));       // Route for registering user (pass in name, email, password --> creates user entry in database on success and returns token)
+app.use('/auth', require('./routes/api/auth'));         // Route for authenticating user (pass in email and password --> either authenticates or not and returns token)
 
 const PORT = process.env.PORT || 5000;
 

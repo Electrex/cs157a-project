@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS Make (
+CREATE TABLE IF NOT EXISTS Makes (
     model VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
     make VARCHAR(25) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Model (
+CREATE TABLE IF NOT EXISTS Models (
     model VARCHAR(50) NOT NULL,
-    year INT NOT NULL,
+    year INTEGER NOT NULL,
     drivetrain VARCHAR(25) NOT NULL,
     transmission VARCHAR(25) NOT NULL,
     carType VARCHAR(25) NOT NULL,
@@ -13,26 +13,28 @@ CREATE TABLE IF NOT EXISTS Model (
     FOREIGN KEY (model) REFERENCES Make(model)
 );
 
-CREATE TABLE IF NOT EXISTS Car (
+CREATE TABLE IF NOT EXISTS Cars (
     vin VARCHAR(17) NOT NULL UNIQUE PRIMARY KEY,
     model VARCHAR(50) NOT NULL,
-    year INT NOT NULL,
-    mileage INT NOT NULL,
+    year INTEGER NOT NULL,
+    mileage INTEGER NOT NULL,
     color VARCHAR(25) NOT NULL,
     FOREIGN KEY (model, year) REFERENCES Model(model, year)
 );
 
-CREATE TABLE IF NOT EXISTS User (
-    userID INT NOT NULL UNIQUE PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Users (
+    userID INTEGER PRIMARY KEY,
     firstName VARCHAR(25),
     lastName VARCHAR(25),
-    userName VARCHAR(25) 
+    userName VARCHAR(25),
+    email VARCHAR(50),
+    psswrd VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS Listings (
-    listingID INT NOT NULL UNIQUE PRIMARY KEY,
+    listingID INTEGER PRIMARY KEY,
     vin VARCHAR(17) NOT NULL,
-    sellerID INT NOT NULL,
+    sellerID INTEGER NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     listingDate DATETIME,
     FOREIGN KEY (vin) REFERENCES Car(vin),
@@ -40,9 +42,9 @@ CREATE TABLE IF NOT EXISTS Listings (
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
-    transactionID INT NOT NULL UNIQUE PRIMARY KEY,
-    buyerID INT NOT NULL,
-    listingID INT NOT NULL,
+    transactionID INTEGER PRIMARY KEY,
+    buyerID INTEGER NOT NULL,
+    listingID INTEGER NOT NULL,
     transactionDate DATETIME,
     FOREIGN KEY (buyerID) REFERENCES User(userID),
     FOREIGN KEY (listingID) REFERENCES Listings(listingID)

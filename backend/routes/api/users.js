@@ -6,27 +6,36 @@ const {check, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const User = require('../../../database/models/User') ;
+// const User = require('../../../database/models/User') ;
 const auth = require('../../middleware/auth');
+const fs = require('fs');
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
 
 // @route   GET api/users/myID
 // @desc    Returns the objectID of the currently logged in user
 // @access  Private
-router.get('/myID', auth, async(req, res) => {
-    try {
-        // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
-        return res.json(req.user);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server error');
-    }
-});
+// router.get('/myID', auth, async(req, res) => {
+//     try {
+//         // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
+//         return res.json(req.user);
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server error');
+//     }
+// });
 
-// @route   POST api/users
+// @route   POST /users
 // @desc    Register user
 // @access  Public
 router.post('/', [
-        check('name', 'Name is required')
+        check('firstName', 'First Name is required')
+            .not()
+            .isEmpty(),
+        check('lastName', 'Last Name is required')
+            .not()
+            .isEmpty(),
+        check('userName', 'User Name is required')
             .not()
             .isEmpty(),
         check('email', 'Please include a valid email')
@@ -42,31 +51,39 @@ router.post('/', [
         }
         
         // deconstruct body of post into the corresponding name, email and password fields
-        const {name, email, password} = req.body;
+        const {firstName, lastName, userName, email, password} = req.body;
 
         try {
-            // Search the database for a user with the email passed into the request body, store the resulting query into the user variable
-            let user = await User.findOne({ email });
-
-            // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
-            if (user) {
-                return res.status(400).json({errors: [{msg: 'User already exists'}]});
-            }
-
-            // Get the avatar of the user's email using gravatar library
-            const avatar = gravatar.url(email, {
-                s: '200',
-                r: 'pg',
-                d: 'mm'
-            })
-
-            // Make a new User entry with the name, email, avatar, and password from the request body (don't save yet, since we still need to hash the password)
-            user = new User({
-                name,
-                email,
-                avatar,
-                password
+            const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+            let db = new sqlite3.Database(dbPath, (err) => {
+                if (err) {
+                    return console.error(err.message);
+                }
+                console.log('Connected to SQLite database');
             });
+
+            // Search the database for a user with the email passed into the request body, store the resulting query into the user variable
+            const findSQLQuery = "SELECT * FROM Users WHERE email=$email";
+            db.all(findSQLQuery, {$email: email}, function(err, rows) {
+                if (err) {
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
+                if (rows.length != 0) {
+                    return res.status(400).json({errors: [{msg: 'User already exists'}]});
+                }
+            });
+
+            let userID = 0;
+
+            let user = {
+                userID,
+                firstName,
+                lastName,
+                userName,
+                email,
+                password
+            }
 
             // initialize salt we'll be using to hash the password with
             const salt = await bcrypt.genSalt(10);
@@ -74,12 +91,22 @@ router.post('/', [
             // hash the password using the generated salt, and set the password of the user entry to this hashed password
             user.password = await bcrypt.hash(password, salt);
 
-            await user.save(); // save the user entry in the database
+            const insertSQLQuery = `INSERT INTO Users (firstName, lastName, userName, email, psswrd) VALUES (?, ?, ?, ?, ?)`;
+            db.run(insertSQLQuery, [user.firstName, user.lastName, user.userName, user.email, user.password], function(err) {
+                if (err) {
+                    return console.log(err.message);
+                }
+                user.userID = this.lastID;
+                console.log(`A row has been inserted with user ${this.lastID}`);
+            });
+
+            db.close();
+
 
             // make a new payload json variable which we will be sending back in the response, consisting of a user key with 1 attriute: the user id (_id from mongodb)
             const payload = {
                 user: {
-                    id: user.id
+                    id: user.userID
                 }
             }
 
@@ -97,25 +124,24 @@ router.post('/', [
             console.error(error.message);
             res.status(500).send('Server error');
         }
-
     }
 );
 
 // @route   DELETE api/users/
 // @desc    Delete profile and corresponding user
 // @access  Private
-router.delete('/', auth, async (req, res) => {
-    try {
-        //Remove profile
-        await Profile.findOneAndRemove({user: req.user.id});
+// router.delete('/', auth, async (req, res) => {
+//     try {
+//         //Remove profile
+//         await Profile.findOneAndRemove({user: req.user.id});
 
-        //Remove user
-        await User.findOneAndRemove({_id: req.user.id});
-        res.json({msg: 'User deleted'});
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server error');
-    }
-});
+//         //Remove user
+//         await User.findOneAndRemove({_id: req.user.id});
+//         res.json({msg: 'User deleted'});
+//     } catch (error) {
+//         console.error(error.message);
+//         res.status(500).send('Server error');
+//     }
+// });
 
 module.exports = router;
