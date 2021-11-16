@@ -12,13 +12,45 @@ const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
-// @route   GET /users/myID
-// @desc    Returns the userID of the currently logged in user
+// @route   GET /listings/all
+// @desc    Returns all car listings in the DB
 // @access  Private
-router.get('/myID', auth, async(req, res) => {
+router.get('/all', async(req, res) => {
     try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+        // Search the database for a user with the email passed into the request body, store the resulting query into the user variable
+        var user;
+        const findSQLQuery = 'SELECT Listings.listingID, Listings.price, Listings.location, \
+        Cars.vin, Cars.model, Cars.year, Cars.mileage, \
+        Users.userName \
+        FROM Listings \
+        JOIN Cars ON Cars.vin = Listings.vin \
+        JOIN Users ON Users.userID = Listings.sellerID';
+        const result = await new Promise((resolve, reject) => {
+            db.all(findSQLQuery, [], function(err, rows) {
+                if (err) {
+                    reject(err);
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
+                if (rows.length == 0) {
+                    return res.status(400).json({errors: [{msg: 'No listings exist'}]});
+                }
+                resolve(rows);
+            });
+        });
+
+        db.close();
+
         // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
-        return res.json(req.user.id);
+        return res.json(result);
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');

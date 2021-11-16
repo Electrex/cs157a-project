@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Models (
     transmission VARCHAR(25) NOT NULL,
     carType VARCHAR(25) NOT NULL,
     PRIMARY KEY (model, year),
-    FOREIGN KEY (model) REFERENCES Make(model)
+    FOREIGN KEY (model) REFERENCES Makes(model) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Cars (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Cars (
     year INTEGER NOT NULL,
     mileage INTEGER NOT NULL,
     color VARCHAR(25) NOT NULL,
-    FOREIGN KEY (model, year) REFERENCES Model(model, year)
+    FOREIGN KEY (model, year) REFERENCES Models(model, year) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Users (
@@ -37,8 +37,9 @@ CREATE TABLE IF NOT EXISTS Listings (
     sellerID INTEGER NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     listingDate DATETIME,
-    FOREIGN KEY (vin) REFERENCES Car(vin),
-    FOREIGN KEY (sellerID) REFERENCES User(userID)
+    location VARCHAR(50) NOT NULL,
+    FOREIGN KEY (vin) REFERENCES Cars(vin) ON DELETE CASCADE,
+    FOREIGN KEY (sellerID) REFERENCES Users(userID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
@@ -46,6 +47,6 @@ CREATE TABLE IF NOT EXISTS Transactions (
     buyerID INTEGER NOT NULL,
     listingID INTEGER NOT NULL,
     transactionDate DATETIME,
-    FOREIGN KEY (buyerID) REFERENCES User(userID),
-    FOREIGN KEY (listingID) REFERENCES Listings(listingID)
+    FOREIGN KEY (buyerID) REFERENCES Users(userID) ON DELETE CASCADE,
+    FOREIGN KEY (listingID) REFERENCES Listings(listingID) ON DELETE CASCADE
 );
