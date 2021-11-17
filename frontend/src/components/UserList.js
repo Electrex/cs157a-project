@@ -59,6 +59,23 @@ const myId = async () => {
     }
 }
 
+const getAllListings = async () => {
+  try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': sessionStorage.getItem('agora_token')
+        }
+      }
+      const res = await axios.get('/listings/all', config);
+      console.log(res.data);
+      return res.data.id;
+    } catch (error) {
+      console.log(error.response.data);
+      return '';
+    }
+}
+
 function UserList(props) {
     const history = useHistory();
     const [updateState, setUpdate] = useState(0);
@@ -110,9 +127,10 @@ function UserList(props) {
               searchResult = await search(searchQuery);
           }
           const id = await myId();
+          const listings = await getAllListings();
 
           for (let i = 0; i < searchResult.length; i++){
-              var buttonName = 'Follow';
+              var buttonName = 'Visit Listing';
               for (let j = 0; j < searchResult[i].followers.length; j++){
                 if (searchResult[i].followers[j]._id == id){
                   buttonName = 'Unfollow'
@@ -139,9 +157,13 @@ function UserList(props) {
         <table>
             <thead>
                 <tr>
-                    <th className='tableHeaderLabel'>Name</th>
-                    <th className='tableHeaderLabel'>Followers</th>
-                    <th className='tableHeaderLabel'>Reviews</th>
+                    <th className='tableHeaderLabel'>VIN</th>
+                    <th className='tableHeaderLabel'>Make</th>
+                    <th className='tableHeaderLabel'>Model</th>
+                    <th className='tableHeaderLabel'>Year</th>
+                    <th className='tableHeaderLabel'>Location</th>
+                    <th className='tableHeaderLabel'>Mileage</th>
+                    <th className='tableHeaderLabel'>Price</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -157,7 +179,7 @@ function UserList(props) {
 
     return (
         <div className='DarkApp'>
-            <h1 className='pageTitle'>User List</h1>
+            <h1 className='pageTitle'>Car Listings</h1>
             <div>
             <input
                 type='text'
