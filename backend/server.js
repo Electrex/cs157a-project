@@ -47,6 +47,10 @@ app.use('/initdb', require('./routes/api/initdb'));     // Route for creating th
 app.use('/users', require('./routes/api/users'));       // Route for registering user (pass in name, email, password --> creates user entry in database on success and returns token)
 app.use('/auth', require('./routes/api/auth'));         // Route for authenticating user (pass in email and password --> either authenticates or not and returns token)
 app.use('/listings', require('./routes/api/listings')); // Route for interacting with the listings table
+app.use('/cars', require('./routes/api/cars'));         // Route for interacting with the cars table
+app.use('/makes', require('./routes/api/makes'));       // Route for interacting with the makes table
+app.use('/models', require('./routes/api/models'));     // Route for interacting with the models table
+app.use('/transactions', require('./routes/api/transactions')); // Route for interacting with the transactions table
 
 const PORT = process.env.PORT || 5000;
 

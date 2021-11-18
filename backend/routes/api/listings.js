@@ -60,6 +60,102 @@ router.get('/all', async(req, res) => {
     }
 });
 
+// @route   GET /listings/user/me
+// @desc    Returns all car listings in the DB that belong to the currently logged in user
+// @access  Private
+router.get('/user/me', auth, async(req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+
+        const findSQLQuery = 'SELECT Listings.listingID, Listings.price, Listings.location, \
+        Cars.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
+        Users.userName \
+        FROM Listings \
+        JOIN Cars ON Cars.vin = Listings.vin \
+        JOIN Users ON Users.userID = Listings.sellerID \
+        JOIN Models ON Models.model = Cars.model \
+        JOIN Models a ON a.year = Cars.year \
+        JOIN Makes ON Makes.model = Models.model \
+        WHERE Listings.sellerID=$userID';
+        const result = await new Promise((resolve, reject) => {
+            db.all(findSQLQuery, {$userID: req.user.id}, function(err, rows) {
+                if (err) {
+                    reject(err);
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
+                if (rows.length == 0) {
+                    return res.status(400).json({errors: [{msg: 'No listings exist'}]});
+                }
+                resolve(rows);
+            });
+        });
+
+        db.close();
+
+        // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
+        return res.json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route   GET /listings/user/:user_id
+// @desc    Returns all car listings in the DB that belong to a user with user_id
+// @access  Public
+router.get('/user/:user_id', async(req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+
+        const findSQLQuery = 'SELECT Listings.listingID, Listings.price, Listings.location, \
+        Cars.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
+        Users.userName \
+        FROM Listings \
+        JOIN Cars ON Cars.vin = Listings.vin \
+        JOIN Users ON Users.userID = Listings.sellerID \
+        JOIN Models ON Models.model = Cars.model \
+        JOIN Models a ON a.year = Cars.year \
+        JOIN Makes ON Makes.model = Models.model \
+        WHERE Listings.sellerID=$userID';
+        const result = await new Promise((resolve, reject) => {
+            db.all(findSQLQuery, {$userID: req.params.user_id}, function(err, rows) {
+                if (err) {
+                    reject(err);
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
+                if (rows.length == 0) {
+                    return res.status(400).json({errors: [{msg: 'No listings exist'}]});
+                }
+                resolve(rows);
+            });
+        });
+
+        db.close();
+
+        // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
+        return res.json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // @route   GET /listings/:listing_id
 // @desc    Returns a car listing in the DB by its listingID
 // @access  Public
@@ -128,7 +224,7 @@ router.delete('/:listing_id', auth, async (req, res) => {
             if (err) {
                 return res.status(500).json({errors: [{msg: err.message}]});
             }
-            return res.json({msg: 'User deleted'});
+            return res.json({msg: 'Listing deleted'});
         });
     } catch (error) {
         console.error(error.message);
