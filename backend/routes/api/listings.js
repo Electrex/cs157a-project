@@ -14,7 +14,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 // @route   GET /listings/all
 // @desc    Returns all car listings in the DB
-// @access  Private
+// @access  Public
 router.get('/all', async(req, res) => {
     try {
         const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
