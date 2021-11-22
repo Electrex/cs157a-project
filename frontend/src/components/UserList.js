@@ -50,7 +50,7 @@ const myId = async () => {
           'x-auth-token': sessionStorage.getItem('agora_token')
         }
       }
-      const res = await axios.get('/api/users/myID', config);
+      const res = await axios.get('/users/myID', config);
       console.log(res.data);
       return res.data.id;
     } catch (error) {
@@ -69,7 +69,7 @@ const getAllListings = async () => {
       }
       const res = await axios.get('/listings/all', config);
       console.log(res.data);
-      return res.data.id;
+      return res.data;
     } catch (error) {
       console.log(error.response.data);
       return '';
@@ -88,7 +88,7 @@ function UserList(props) {
     const fetchData = async () => {
         let res;
         if (searchQuery.length === 0) {
-            res = await fullList();
+            res = await getAllListings();
         } 
         else {
             res = await search(searchQuery);
@@ -121,7 +121,7 @@ function UserList(props) {
       const fetchData = async () =>{
           var searchResult = [];
           if (searchQuery.length == 0){
-              searchResult = await fullList();
+              searchResult = await getAllListings();
           }
           else{
               searchResult = await search(searchQuery);
@@ -131,20 +131,24 @@ function UserList(props) {
 
           for (let i = 0; i < searchResult.length; i++){
               var buttonName = 'Visit Listing';
-              for (let j = 0; j < searchResult[i].followers.length; j++){
-                if (searchResult[i].followers[j]._id == id){
-                  buttonName = 'Unfollow'
-                }
-              }
+              // for (let j = 0; j < searchResult[i].followers.length; j++){
+              //   if (searchResult[i].followers[j]._id == id){
+              //     buttonName = 'Unfollow'
+              //   }
+              // }
               rows.push((
                   <tr key = {i}>
-                      <td className='tableRowLabelLeft'>{searchResult[i].user.name}</td>
-                      <td className='tableRowLabelCenter'>{searchResult[i].followers.length}</td>
-                      <td className='tableRowLabelCenter'>{searchResult[i].reviews.length}</td>
-                      <td><button className='tableButton' 
-                          onClick={()=>handleFollow(searchResult[i].user._id)}>
-                            {buttonName}</button></td>
-                      <td><button className='tableButton' onClick={()=>viewProfile(searchResult[i]._id)}>View Profile</button></td>
+                      <td className='tableRowLabelLeft'>{searchResult[i].vin}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].make}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].model}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].year}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].location}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].mileage}</td>
+                      <td className='tableRowLabelCenter'>{searchResult[i].price}</td>
+                      {/* <td><button className='tableButton' 
+                          onClick={()=>history.push(`/listing/${searchResult[i].listingID}`)}>
+                            {buttonName}</button></td> */}
+                      <td><button className='tableButton' onClick={()=>history.push(`/listing/${searchResult[i].listingID}`)}>View Listing</button></td>
                   </tr>
               ))
           }
@@ -173,7 +177,7 @@ function UserList(props) {
     );
     
     const handleSearch = (query) => {
-        history.push(`/users?${query}`);
+        history.push(`/search?${query}`);
         setUpdate(updateState + 1)
     }
 
@@ -183,7 +187,7 @@ function UserList(props) {
             <div>
             <input
                 type='text'
-                placeholder='Search for User'
+                placeholder='Search for Car Listing'
                 name='query'
                 value={query}
                 onChange={(e) => {setQuery(e.target.value)}}

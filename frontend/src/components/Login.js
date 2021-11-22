@@ -53,7 +53,7 @@ function Login(props) {
     // TODO: pass user information into next page? Not sure if that is required
     const handleLogin = async (event) => {
         if (await login(event)) {
-            props.history.push('/me')
+            props.history.push('/home')
         }
         else {
             setEmail(initialState.email);

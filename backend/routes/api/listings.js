@@ -157,7 +157,7 @@ router.get('/user/:user_id', async(req, res) => {
 });
 
 // @route   GET /listings/:listing_id
-// @desc    Returns a car listing in the DB by its listingID
+// @desc    Returns a listing in the DB by its listingID
 // @access  Public
 router.get('/:listing_id', async(req, res) => {
     try {

@@ -6,12 +6,16 @@ import './style.css';
 
 function Register(props) {
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
 
   const initialState = {
-    name: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
     email: '',
     password: '',
     password2: ''
@@ -19,7 +23,9 @@ function Register(props) {
 
   const clearState = () => {
     setEmail(initialState.email);
-    setName(initialState.name);
+    setFirstName(initialState.firstName);
+    setLastName(initialState.lastName);
+    setUserName(initialState.userName);
     setPassword(initialState.password);
     setPassword2(initialState.password2);
   };
@@ -30,7 +36,9 @@ function Register(props) {
       console.log('Passwords do not match')
     } else {
       const newUser = {
-        name,
+        firstName,
+        lastName,
+        userName,
         email,
         password
       }
@@ -59,51 +67,15 @@ function Register(props) {
     }
   };
 
-  const createProfile = async (e) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': sessionStorage.getItem('agora_token')
-      }
-    }
-
-    const newProfile = {
-      user: sessionStorage.getItem('agora_token'),
-      bio: `Hi! I am ${name}`,
-      followers: [],
-      following: [],
-      reviews: []
-    }
-
-    try{
-      const body = JSON.stringify(newProfile)
-      const res = await axios.post('/api/profile', body, config);
-      if (res.status === 400 || res.status === 500){
-        return null
-      }
-      console.log(res.data);
-      return res.data
-    } catch (error) {
-        console.log(error.response.data);
-        return null
-    }
-  }
-
   const handleRegister = async (e) => {
     if (await register(e)){
-      if(await createProfile(e)){
-        props.history.push('/me')
-      }
-      else{
-        setEmail(initialState.email);
-        setName(initialState.name);
-        setPassword(initialState.password);
-        setPassword2(initialState.password2);
-      }
+      props.history.push('/home')
     }
     else{
       setEmail(initialState.email);
-      setName(initialState.name);
+      setFirstName(initialState.firstName);
+      setLastName(initialState.lastName);
+      setUserName(initialState.userName);
       setPassword(initialState.password);
       setPassword2(initialState.password2);
       alert('An issue occurred, please try again.')
@@ -135,15 +107,43 @@ function Register(props) {
           <form className='formFields' onSubmit={ event => handleRegister(event) }>
             <div className='formField'>
               <label className='formFieldLabel'>
-              Name
+              First Name
               </label>
               <input
               type='text'
               className='formFieldInput'
-              placeholder='Enter your name'
-              name='name'
-              value={ name }
-              onChange={ (event) => {setName(event.target.value)} }
+              placeholder='Enter your first name'
+              name='firstName'
+              value={ firstName }
+              onChange={ (event) => {setFirstName(event.target.value)} }
+              />
+            </div>
+
+            <div className='formField'>
+              <label className='formFieldLabel'>
+              Last Name
+              </label>
+              <input
+              type='text'
+              className='formFieldInput'
+              placeholder='Enter your last name'
+              name='lastName'
+              value={ lastName }
+              onChange={ (event) => {setLastName(event.target.value)} }
+              />
+            </div>
+
+            <div className='formField'>
+              <label className='formFieldLabel'>
+              User Name
+              </label>
+              <input
+              type='text'
+              className='formFieldInput'
+              placeholder='Enter your user-name'
+              name='userName'
+              value={ userName }
+              onChange={ (event) => {setUserName(event.target.value)} }
               />
             </div>
 
