@@ -27,15 +27,15 @@ router.get('/all', async(req, res) => {
 
         // Search the database for a user with the email passed into the request body, store the resulting query into the user variable
         var user;
-        const findSQLQuery = 'SELECT Listings.listingID, Listings.price, Listings.location, \
-        Cars.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
+        const findSQLQuery = 'SELECT DISTINCT Listings.listingID, Listings.price, Listings.location, \
+        Listings.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
         Users.userName \
         FROM Listings \
-        JOIN Cars ON Cars.vin = Listings.vin \
-        JOIN Users ON Users.userID = Listings.sellerID \
-        JOIN Models ON Models.model = Cars.model \
-        JOIN Models a ON a.year = Cars.year \
-        JOIN Makes ON Makes.model = Models.model';
+        INNER JOIN Users ON Users.userID = Listings.sellerID \
+        INNER JOIN Cars ON Cars.vin = Listings.vin \
+        INNER JOIN Models ON Models.model = Cars.model \
+        INNER JOIN Models a ON a.year = Cars.year \
+        INNER JOIN Makes ON Makes.model = Models.model';
         const result = await new Promise((resolve, reject) => {
             db.all(findSQLQuery, [], function(err, rows) {
                 if (err) {
