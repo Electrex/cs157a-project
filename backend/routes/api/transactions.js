@@ -26,10 +26,11 @@ router.get('/me', auth, async(req, res) => {
         });
 
         // Search the database for all cars
-        const findSQLQuery = 'SELECT Transactions.transactionID, Transactions.listingID, Transactions.buyerID, Transactions.transactionDate, \
-        Listings.sellerID, Listings.price \
+        const findSQLQuery = 'SELECT DISTINCT Transactions.transactionID, Transactions.listingID, Transactions.buyerID, Transactions.transactionDate, \
+        Listings.sellerID, Listings.price, Users.userName \
         FROM Transactions \
         JOIN Listings ON Listings.listingID = Transactions.listingID \
+        JOIN Users ON Users.userID = Listings.sellerID \
         WHERE Listings.sellerID=$sellerID OR Transactions.buyerID=$buyerID';
         const result = await new Promise((resolve, reject) => {
             db.all(findSQLQuery, {$sellerID: req.user.id, $buyerID: req.user.id}, function(err, rows) {
