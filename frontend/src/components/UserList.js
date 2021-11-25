@@ -4,28 +4,6 @@ import axios from 'axios';
 
 import './style.css';
 
-const search = async (q) => {
-    try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        };
-
-        const body = {'name': q};
-
-        const res = await axios.post('/api/profile/byname', body, config);
-        if (res.status === 400 || res.status === 500){
-          return [];
-        }
-        console.log(res.data);
-        return res.data;
-      } catch (error) {
-        console.log(error.response.data);
-        return [];
-      }
-}
-
 const fullList = async () => {
     try {
         const config = {
@@ -76,25 +54,82 @@ const getAllListings = async () => {
     }
 }
 
+const getAllListingsByFilter = async (q) => {
+  try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': sessionStorage.getItem('agora_token')
+        }
+      }
+      const res = await axios.get('/listings/all', config);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return '';
+    }
+}
+
+const search = async (qs) => {
+  try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      let body = {
+      };
+      let q = new URLSearchParams(qs);
+      if (q.has("make")) {
+        body.make = q.get("make");
+      }
+      if (q.has("model")) {
+        body.model = q.get("model");
+      }
+      if (q.has("mileage")) {
+        body.mileage = q.get("mileage");
+      }
+      if (q.has("year")) {
+        body.year = q.get("year");
+      }
+
+      const res = await axios.post('/listings/byQuery', body, config);
+      if (res.status === 400 || res.status === 500){
+        return [];
+      }
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return [];
+    }
+}
+
 function UserList(props) {
     const history = useHistory();
     const [updateState, setUpdate] = useState(0);
     const [query, setQuery] = useState('');
-    const [displayRows, setRows] = useState([]);
+    const [make, setMake] = useState('');
+    const [model, setModel] = useState('');
+    const [mileage, setMileage] = useState();
+    const [year, setYear] = useState();
     let [searchResult, setSearchResult] = useState([]);
-    const searchQuery = props.location.search.substring(1)
+    const [displayRows, setRows] = useState([]);
+    let searchQuery = props.location.search.substring(1)
     let rows = [];
 
-    const fetchData = async () => {
-        let res;
-        if (searchQuery.length === 0) {
-            res = await getAllListings();
-        } 
-        else {
-            res = await search(searchQuery);
-        }
-        return res;
-    }
+    // const fetchData = async () => {
+    //     let res;
+    //     if (sp.length === 0) {
+    //         res = await getAllListings();
+    //     } 
+    //     else {
+    //         // res = await search(sp);
+    //     }
+    //     return res;
+    // }
 
     const handleFollow = async (userId) => {
         try {
@@ -176,9 +211,23 @@ function UserList(props) {
         </table>
     );
     
-    const handleSearch = (query) => {
-        history.push(`/search?${query}`);
-        setUpdate(updateState + 1)
+    const handleSearch = (make, model, mileage, year) => {
+      let queryString = '/home?';
+      if (make !== '') {
+        queryString += `make=${make}&`;
+      }
+      if (model !== '') {
+        queryString += `model=${model}&`;
+      }
+      if (mileage !== undefined) {
+        queryString += `mileage=${mileage}&`;
+      }
+      if (year !== undefined) {
+        queryString += `year=${year}&`;
+      }
+      queryString = queryString.slice(0, -1); 
+      history.push(queryString);
+      setUpdate(updateState + 1)
     }
 
     return (
@@ -187,14 +236,41 @@ function UserList(props) {
             <div>
             <input
                 type='text'
-                placeholder='Search for Car Listing'
-                name='query'
-                value={query}
-                onChange={(e) => {setQuery(e.target.value)}}
+                placeholder='Make:'
+                name='make'
+                value={make}
+                onChange={(e) => {setMake(e.target.value)}}
                 required
                 className='searchFieldInput'
             />
-            <button className='searchFieldButton' onClick={(e) => handleSearch(query)}>Search</button>
+            <input
+                type='text'
+                placeholder='Model:'
+                name='model'
+                value={model}
+                onChange={(e) => {setModel(e.target.value)}}
+                required
+                className='searchFieldInput'
+            />
+            <input
+                type='number'
+                placeholder='Mileage at most:'
+                name='mileage'
+                value={mileage}
+                onChange={(e) => {setMileage(e.target.value)}}
+                required
+                className='searchFieldInput'
+            />
+            <input
+                type='number'
+                placeholder='Year newer than:'
+                name='year'
+                value={year}
+                onChange={(e) => {setYear(e.target.value)}}
+                required
+                className='searchFieldInput'
+            />
+            <button className='searchFieldButton' onClick={(e) => handleSearch(make, model, mileage, year)}>Search</button>
             <br></br><br></br>
             </div>
             <div>

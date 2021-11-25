@@ -60,6 +60,95 @@ router.get('/all', async(req, res) => {
     }
 });
 
+// @route   GET /listings/byQuery
+// @desc    Returns all car listings in the DB filtered by a certain query
+// @access  Public
+router.post('/byQuery', async(req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+        let findSQLQuery = 'SELECT DISTINCT Listings.listingID, Listings.price, Listings.location, \
+        Listings.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
+        Users.userName \
+        FROM Listings \
+        INNER JOIN Users ON Users.userID = Listings.sellerID \
+        INNER JOIN Cars ON Cars.vin = Listings.vin \
+        INNER JOIN Models ON Models.model = Cars.model \
+        INNER JOIN Models a ON a.year = Cars.year \
+        INNER JOIN Makes ON Makes.model = Models.model ';
+        
+        const {make, model, year, mileage} = req.body;
+        let found = false;
+        console.log(req.body);
+
+        if (make !== undefined) {
+            if (!found) {
+                findSQLQuery += `WHERE Makes.make='${make}' AND `;
+                found = true;
+            } else {
+                findSQLQuery += `Makes.make='${make}' AND `;
+            }
+        }
+        if (model !== undefined) {
+            if (!found) {
+                findSQLQuery += `WHERE Cars.model='${model}' AND `;
+                found = true;
+            } else {
+                findSQLQuery += `Cars.model='${model}' AND `;
+            }
+        }
+        if (year !== undefined) {
+            if (!found) {
+                findSQLQuery += `WHERE Cars.year>=${year} AND `;
+                found = true;
+            } else {
+                findSQLQuery += `Cars.year>=${year} AND `;
+            }
+        }
+        if (mileage !== undefined) {
+            if (!found) {
+                findSQLQuery += `WHERE Cars.mileage<=${mileage} AND `;
+                found = true;
+            } else {
+                findSQLQuery += `Cars.mileage<=${mileage} AND `;
+            }
+        }
+        if (found) {
+            findSQLQuery = findSQLQuery.substring(0, findSQLQuery.length - 4);
+        } else {
+            findSQLQuery = findSQLQuery.substring(0, findSQLQuery.length - 1);
+        }
+
+        const result = await new Promise((resolve, reject) => {
+            db.all(findSQLQuery, [], function(err, rows) {
+                if (err) {
+                    reject(err);
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                // If user is not null, then there is already a user in the database with the same email. Since emails must be unique then we cannot make a new user with the same email.
+                if (rows.length == 0) {
+                    return res.status(400).json({errors: [{msg: 'No listings exist'}]});
+                }
+                resolve(rows);
+            });
+        });
+
+        db.close();
+
+        // Return the json object for the user's ID in the response with the format {user: { id: user.id }}
+        return res.json(result);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // @route   GET /listings/user/me
 // @desc    Returns all car listings in the DB that belong to the currently logged in user
 // @access  Private
