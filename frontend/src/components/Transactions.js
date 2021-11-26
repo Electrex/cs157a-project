@@ -25,7 +25,7 @@ const getMyTransactions = async () => {
     }
 }
 
-function UserList(props) {
+function Transactions(props) {
     const history = useHistory();
     const [displayRows, setRows] = useState([]);
     let rows = [];
@@ -85,4 +85,4 @@ function UserList(props) {
     );
 }
 
-export default UserList;
+export default Transactions;

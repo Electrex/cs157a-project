@@ -101,6 +101,51 @@ router.get('/:vin', async(req, res) => {
     }
 });
 
+// @route   GET /cars/details/:listing_id
+// @desc    Returns a car's details in the DB by its vin
+// @access  Public
+router.get('/details/:listing_id', async(req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, '../../../database/test/testdb.db');
+        let db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log('Connected to SQLite database');
+        });
+
+        const findSQLQuery = `SELECT DISTINCT Listings.price, Listings.listingDate, Listings.location, Cars.vin, Makes.make, Cars.model, Cars.year, Cars.mileage, \
+        Cars.color, Models.drivetrain, Models.transmission, Models.carType, Listings.sellerID, Users.userName, Users.firstName, Users.lastName \
+        FROM Listings \
+        JOIN Users ON Users.userID = Listings.sellerID \
+        JOIN Cars ON Cars.vin = Listings.vin \
+        JOIN Models ON Models.model = Cars.model \
+        JOIN Models a ON a.year = Cars.year \
+        JOIN Makes ON Makes.model = Models.model \
+        WHERE Listings.listingID=$listingID`;
+        const result = await new Promise((resolve, reject) => {
+            db.all(findSQLQuery, {$listingID: req.params.listing_id}, function(err, rows) {
+                if (err) {
+                    reject(err);
+                    return res.status(500).json({errors: [{msg: err.message}]});
+                }
+                
+                if (rows.length == 0) {
+                    return res.status(400).json({errors: [{msg: 'No listings exist'}]});
+                }
+                resolve(rows);
+            });
+        });
+
+        db.close();
+
+        return res.json(result[0]);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // @route   DELETE /car/:vin
 // @desc    Delete a car by its vin
 // @access  Private
