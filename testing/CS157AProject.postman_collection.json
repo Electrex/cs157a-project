@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "d005812c-7498-4c84-b4cf-ad6e61e16a08",
+		"name": "CS157A",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete car by vin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTM3NDA1LCJleHAiOjE2Mzc0OTc0MDV9.RKOek93Udj1bSzD6pKwo4EuDSYKgIqym1IinkQk6hAo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/cars/W06VR52R9WR220134",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"cars",
+						"W06VR52R9WR220134"
+					],
+					"query": [
+						{
+							"key": "x-auth-token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTM3NDA1LCJleHAiOjE2Mzc0OTc0MDV9.RKOek93Udj1bSzD6pKwo4EuDSYKgIqym1IinkQk6hAo",
+							"disabled": true
+						},
+						{
+							"key": "content-type",
+							"value": "application/json",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add car",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTkyNzI4LCJleHAiOjE2Mzc1NTI3Mjh9.FxIjfWYToawersw0rZmQAsRht2gL9xi-wWq_k_1tJhk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vin\": \"W06VR52R9WR220134\",\r\n    \"model\": \"Accord\",\r\n    \"year\": 2004,\r\n    \"mileage\": 176000,\r\n    \"color\": \"Blue\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/cars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create listing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTM3NDA1LCJleHAiOjE2Mzc0OTc0MDV9.RKOek93Udj1bSzD6pKwo4EuDSYKgIqym1IinkQk6hAo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"vin\": \"WVGBV75N19W507096\",\r\n    \"price\": 8300,\r\n    \"listingDate\": \"2021-03-01 10:30:00\",\r\n    \"location\": \"San Jose, CA\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/listings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"listings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete listing by listingID",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTM3NDA1LCJleHAiOjE2Mzc0OTc0MDV9.RKOek93Udj1bSzD6pKwo4EuDSYKgIqym1IinkQk6hAo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/listings/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"listings",
+						"5"
+					],
+					"query": [
+						{
+							"key": "x-auth-token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MTM3NDA1LCJleHAiOjE2Mzc0OTc0MDV9.RKOek93Udj1bSzD6pKwo4EuDSYKgIqym1IinkQk6hAo",
+							"disabled": true
+						},
+						{
+							"key": "content-type",
+							"value": "application/json",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user's userID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjowfSwiaWF0IjoxNjM3NTE1NzM1LCJleHAiOjE2Mzc4NzU3MzV9.GVe8jyT-J4nJ4qpwB4UqwT8Wwco93nLZl1htLewVvno",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/myID",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"myID"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a transaction",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjM3MjE4MjY0LCJleHAiOjE2Mzc1NzgyNjR9.OJmasuJpPrgOh-6Y4HVvrRMaSZhI6G6x29QrJqItxI8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"listingID\": 3\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Joe\",\r\n    \"lastName\": \"Shmoe\",\r\n    \"userName\": \"JShmoe\",\r\n    \"email\": \"jshmoe@gmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyfSwiaWF0IjoxNjM2OTU2NzUzLCJleHAiOjE2MzczMTY3NTN9.USi5ObSMvoZvKIUG3tDvN9uYGEmsswmvvYR0cvm8oWA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "x-auth-token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjowfSwiaWF0IjoxNjM2OTQxNTk1LCJleHAiOjE2MzczMDE1OTV9.pvoLHgVwMqfCunH3Di0CUxXN5HLCAWBfRp8zfcJ05wA",
+							"disabled": true
+						},
+						{
+							"key": "content-type",
+							"value": "application/",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjowfSwiaWF0IjoxNjM2OTQxNTk1LCJleHAiOjE2MzczMDE1OTV9.pvoLHgVwMqfCunH3Di0CUxXN5HLCAWBfRp8zfcJ05wA",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"ymostafa30@gmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"auth"
+					],
+					"query": [
+						{
+							"key": "x-auth-token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjowfSwiaWF0IjoxNjM2OTQxNTk1LCJleHAiOjE2MzczMDE1OTV9.pvoLHgVwMqfCunH3Di0CUxXN5HLCAWBfRp8zfcJ05wA",
+							"disabled": true
+						},
+						{
+							"key": "content-type",
+							"value": "application/",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialize database",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/initdb/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"initdb",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a Make",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyfSwiaWF0IjoxNjM2OTU2NzUzLCJleHAiOjE2MzczMTY3NTN9.USi5ObSMvoZvKIUG3tDvN9uYGEmsswmvvYR0cvm8oWA",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": \"RS4\",\r\n    \"make\": \"Audi\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/makes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"makes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a Model",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyfSwiaWF0IjoxNjM2OTU2NzUzLCJleHAiOjE2MzczMTY3NTN9.USi5ObSMvoZvKIUG3tDvN9uYGEmsswmvvYR0cvm8oWA",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"model\": \"Camry\",\r\n    \"year\": 2012,\r\n    \"drivetrain\": \"RWD\",\r\n    \"transmission\": \"Automatic\",\r\n    \"carType\": \"Sedan\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/models",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"models"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
