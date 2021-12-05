@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/server.Dockerfile
+    image: node-server
+    container_name: node-server
+    command: npm start
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    volumes:
+      - /usr/app/database/test
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/client.Dockerfile
+    image: react-client
+    container_name: react-client
+    command: npm start
+    volumes:
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    data-volume:
+    node_modules:
+    web-root:
+      driver: local
