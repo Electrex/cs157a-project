@@ -46,5 +46,5 @@
 
 ## Docker Deployment
 * Navigate to root directory `cs157a-project`
-* Run `docker-compose up`
+* Run `docker-compose build` followed by `docker-compose up`
 * Visit `localhost:3000` in browser for UI
