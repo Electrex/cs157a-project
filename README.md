@@ -43,3 +43,8 @@
         JOIN Models a ON a.year = Cars.year
         JOIN Makes ON Makes.model = Models.model
         WHERE Listings.sellerID=1;`
+
+## Docker Deployment
+* Navigate to root directory `cs157a-project`
+* Run `docker-compose up`
+* Visit `localhost:3000` in browser for UI
