@@ -53,12 +53,7 @@ SSELECT Listings.listingID, Listings.price, Listings.location,
 Option 1: Pull and run the pre-made docker image files (recommended)
 --------------------------------------------------------------------------------
 1. Make sure you have docker installed
-2. Pull the latest docker images for the server and client:
-```
-$ docker pull electrex/node-server:2.0
-$ docker pull electrex/react-client:2.0
-```
-3. Setup the docker network and run the images for the server and client in their isolated containers:
+3. Setup the docker network, pull and run the images for the server and client in their isolated containers:
 ```
 $ docker network create project
 $ docker run -p 3001:3001 -d --network=project --name=node-server electrex/node-server:2.0
