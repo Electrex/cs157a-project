@@ -45,6 +45,8 @@
         WHERE Listings.sellerID=1;`
 
 ## Docker Deployment
-* Navigate to root directory `cs157a-project`
-* Run `docker-compose build` followed by `docker-compose up`
-* Visit `localhost:3000` in browser for UI
+* `docker network create project`
+* `docker run -p 3001:3001 -d --network=project --name=node-server electrex/node-server:2.0`
+        * This will pull and run the publicly available image for the server 
+* `docker run -p 3000:3000 -d --network=project --name=react-client electrex/react-client:2.0`
+        * This will pull and run the publicly available image for the frontend  
