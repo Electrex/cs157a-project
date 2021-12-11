@@ -51,15 +51,19 @@ const search = async (qs) => {
       let q = new URLSearchParams(qs);
       if (q.has("make")) {
         body.make = q.get("make");
+        body.make = body.make.charAt(0).toUpperCase() + body.make.substr(1).toLowerCase();
       }
       if (q.has("model")) {
         body.model = q.get("model");
+        body.model = body.model.charAt(0).toUpperCase() + body.model.substr(1).toLowerCase();
       }
       if (q.has("mileage")) {
         body.mileage = q.get("mileage");
+        body.mileage = body.mileage.charAt(0).toUpperCase() + body.mileage.substr(1).toLowerCase();
       }
       if (q.has("year")) {
         body.year = q.get("year");
+        body.year = body.year.charAt(0).toUpperCase() + body.year.substr(1).toLowerCase();
       }
 
       const res = await axios.post('/listings/byQuery', body, config);

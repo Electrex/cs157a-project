@@ -56,8 +56,8 @@ Option 1: Pull and run the pre-made docker image files (recommended)
 3. Setup the docker network, pull and run the images for the server and client in their isolated containers:
 ```
 $ docker network create project
-$ docker run -p 3001:3001 -d --network=project --name=node-server electrex/node-server:2.0
-$ docker run -p 3000:3000 -d --network=project --name=react-client electrex/react-client:2.0
+$ docker run -p 3001:3001 -d --network=project --name=node-server electrex/node-server:3.0
+$ docker run -p 3000:3000 -d --network=project --name=react-client electrex/react-client:3.0
 ```
 4. Once the project's containers are up and running, visit `localhost:3000` in browser to access the application's UI
 

@@ -184,6 +184,54 @@ router.get('/', async (req, res) => {
                 email: "leoalciso@gmail.com",
                 password: "123456"
             },
+            {
+                userID: 0,
+                firstName: "Leclown",
+                lastName: "James",
+                userName: "leclown",
+                email: "leclown@gmail.com",
+                password: "123456"
+            },
+            {
+                userID: 0,
+                firstName: "Leclown",
+                lastName: "James",
+                userName: "leclown",
+                email: "leclown@gmail.com",
+                password: "123456"
+            },
+            {
+                userID: 0,
+                firstName: "Billy",
+                lastName: "Gates",
+                userName: "iownit",
+                email: "iownit@hotmail.com",
+                password: "123456"
+            },
+            {
+                userID: 0,
+                firstName: "Warren",
+                lastName: "Buffet",
+                userName: "cashcow",
+                email: "warren@gmail.com",
+                password: "123456"
+            },
+            {
+                userID: 0,
+                firstName: "Mel",
+                lastName: "Gibson",
+                userName: "ihate",
+                email: "ihate@gmail.com",
+                password: "123456"
+            },
+            {
+                userID: 0,
+                firstName: "Jesse",
+                lastName: "James",
+                userName: "dirtball",
+                email: "jjames@gmail.com",
+                password: "123456"
+            }
         ]
         let listings = [
             {
@@ -196,6 +244,14 @@ router.get('/', async (req, res) => {
             },
             {
                 listingID: 0,
+                vin: 'KL5VM52L54B110914',
+                sellerID: 1,
+                price: '18000.00',
+                listingDate: '2021-03-01 10:00:00',
+                location: 'San Jose, CA'
+            },
+            {
+                listingID: 0,
                 vin: 'YS3AK35E4M5002999',
                 sellerID: 2,
                 price: '10000.00',
@@ -204,8 +260,32 @@ router.get('/', async (req, res) => {
             },
             {
                 listingID: 0,
+                vin: 'JHMWD5523DS022721',
+                sellerID: 2,
+                price: '14000.00',
+                listingDate: '2021-01-23 12:30:00',
+                location: 'San Jose, CA'
+            },
+            {
+                listingID: 0,
                 vin: 'JN1CA31D3YT717809',
                 sellerID: 3,
+                price: '14000.00',
+                listingDate: '2021-07-01 12:00:00',
+                location: 'San Jose, CA'
+            },
+            {
+                listingID: 0,
+                vin: 'WVGBV75N19W507096',
+                sellerID: 4,
+                price: '14000.00',
+                listingDate: '2021-07-01 12:00:00',
+                location: 'San Jose, CA'
+            },
+            {
+                listingID: 0,
+                vin: '1FASP11J6TW112004',
+                sellerID: 5,
                 price: '14000.00',
                 listingDate: '2021-07-01 12:00:00',
                 location: 'San Jose, CA'
